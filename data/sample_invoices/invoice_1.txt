@@ -1,0 +1,15 @@
+Invoice Number: INV-001
+
+Supplier: ABC Traders
+
+GSTIN: 29ABCDE1234F1Z5
+
+Date: 15-06-2025
+
+Taxable Value: 10000
+
+CGST: 900
+
+SGST: 900
+
+Total Amount: 11800
