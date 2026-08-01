@@ -5,8 +5,8 @@ from agents.filing_agent import filing_agent
 from tools.tools import process_invoice_batch
 
 master_agent = Agent(
-    name="regflow_master",
-    model="gemini-3.5-flash",
+    name="master_agent",
+    model="gemini-2.0-flash",
     description="RegFlow AI Master Agent",
     instruction="""
 You are the Master Agent for RegFlow AI. Your job is to orchestrate the GST processing pipeline.

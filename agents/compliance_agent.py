@@ -4,7 +4,7 @@ from tools.gst_calculator import calculate_gst_summary
 
 compliance_agent = Agent(
     name="compliance_agent",
-    model="gemini-3.5-flash",
+    model="gemini-2.0-flash",
     description="GST Compliance Auditor",
     instruction="""
 You are the Compliance Agent. Your job is to deterministically audit GST invoices.
