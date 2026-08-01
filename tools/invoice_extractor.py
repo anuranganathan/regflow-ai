@@ -15,7 +15,7 @@ def process_invoice(invoice_text: str):
     prompt = GST_ENGINE_PROMPT + f"\n\nINVOICE:\n{invoice_text}"
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
         contents=prompt
     )
 
@@ -26,3 +26,6 @@ def process_invoice(invoice_text: str):
         text = text.replace("```json", "").replace("```", "").strip()
 
     return json.loads(text)
+
+
+extract_invoice_data = process_invoice

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RegFlow AI - GST Filing Copilot</title>
+    <meta name="description" content="Automate GST filing and compliance checks from digital and scanned PDF invoices with AI-powered OCR.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <header class="app-header">
+        <div class="logo-area">
+            <span class="logo-icon">⚡</span>
+            <h1>RegFlow AI</h1>
+        </div>
+        <div class="status-badge-container">
+            <span class="status-indicator-dot online"></span>
+            <span class="status-text">Compliance Engine Connected</span>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Step Indicator -->
+        <section class="steps-tracker" aria-label="Processing Steps">
+            <div class="step active" id="step-1">
+                <div class="step-number">1</div>
+                <div class="step-label">Upload Invoice</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step-2">
+                <div class="step-number">2</div>
+                <div class="step-label">OCR / Extract</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step-3">
+                <div class="step-number">3</div>
+                <div class="step-label">Verify Compliance</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step-4">
+                <div class="step-number">4</div>
+                <div class="step-label">Filing Summary</div>
+            </div>
+        </section>
+
+        <!-- Interactive Upload Workspace -->
+        <section class="workspace-grid">
+            <div class="panel-left">
+                <!-- Drop Zone Card -->
+                <div class="glass-card upload-card" id="drop-zone">
+                    <input type="file" id="file-input" accept="application/pdf" class="hidden-input">
+                    <div class="upload-icon">📂</div>
+                    <h2>Analyze New Invoice</h2>
+                    <p>Drag and drop your <strong>Invoice PDF</strong> here, or click to browse files</p>
+                    <span class="file-format-info">Supports digital and scanned PDF invoices</span>
+                </div>
+
+                <!-- Live Status and Activity Panel -->
+                <div class="glass-card status-card" id="status-card">
+                    <h3>Pipeline Log</h3>
+                    <div class="logs-container" id="logs-container">
+                        <div class="log-entry system">Ready. Please upload an invoice PDF to start extraction.</div>
+                    </div>
+                    <div class="progress-bar-wrapper hidden" id="progress-wrapper">
+                        <div class="progress-bar-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis Results (Visible after processing starts) -->
+            <div class="panel-right">
+                <div class="glass-card results-card" id="results-card">
+                    <div class="results-header">
+                        <h2>Audit Dashboard</h2>
+                        <span class="badge" id="compliance-badge">No File Analyzed</span>
+                    </div>
+
+                    <div class="results-workspace">
+                        <!-- Extracted text area -->
+                        <div class="result-column text-column">
+                            <h3>Extracted Text</h3>
+                            <pre class="code-view" id="extracted-text-view">Upload a PDF invoice to view the raw extracted text output here...</pre>
+                        </div>
+
+                        <!-- Structured invoice summary -->
+                        <div class="result-column data-column">
+                            <h3>Structured Metadata</h3>
+                            <div class="meta-grid">
+                                <div class="meta-item">
+                                    <span class="meta-label">Invoice Number</span>
+                                    <span class="meta-value" id="meta-inv-num">-</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Supplier</span>
+                                    <span class="meta-value" id="meta-supplier">-</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">GSTIN</span>
+                                    <span class="meta-value" id="meta-gstin">-</span>
+                                </div>
+                            </div>
+
+                            <h3 class="section-title">GST Tax Summary</h3>
+                            <div class="tax-card">
+                                <div class="tax-row">
+                                    <span>Taxable Value</span>
+                                    <span class="tax-price" id="tax-taxable">₹0.00</span>
+                                </div>
+                                <div class="tax-row">
+                                    <span>CGST</span>
+                                    <span class="tax-price" id="tax-cgst">₹0.00</span>
+                                </div>
+                                <div class="tax-row">
+                                    <span>SGST</span>
+                                    <span class="tax-price" id="tax-sgst">₹0.00</span>
+                                </div>
+                                <div class="tax-divider"></div>
+                                <div class="tax-row total">
+                                    <span>Total Tax</span>
+                                    <span class="tax-price highlight" id="tax-total-tax">₹0.00</span>
+                                </div>
+                                <div class="tax-row total">
+                                    <span>Total Amount</span>
+                                    <span class="tax-price highlight" id="tax-total-amount">₹0.00</span>
+                                </div>
+                            </div>
+
+                            <div class="compliance-issues-container" id="issues-box">
+                                <h3>Filing Validation Issues</h3>
+                                <ul class="issues-list" id="issues-list">
+                                    <li class="no-issues">No validation errors or issues detected.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

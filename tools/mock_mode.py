@@ -1,6 +1,6 @@
 import json
 
-MOCK_ENABLED = True  # turn ON only if quota breaks
+MOCK_ENABLED = False  # turn ON only if quota breaks
 
 
 def mock_process_invoice(invoice_text: str):
