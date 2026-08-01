@@ -34,10 +34,11 @@ def extract_text_from_pdf(file_path: str) -> str:
 from google.adk.tools.tool_context import ToolContext
 
 
-def process_invoice(invoice_text: str, ctx: ToolContext = None):
+def process_invoice(invoice_text: str, tool_context: ToolContext = None, ctx: ToolContext = None):
     """
     One-call GST processing engine (NO multiple tool calls)
     """
+    ctx = tool_context or ctx
     original_source = invoice_text
 
     # If a file path is passed, extract text from it first
@@ -143,10 +144,11 @@ Rules:
 # FINAL FILING AGGREGATOR (NO GEMINI)
 # =========================
 
-def generate_filing_summary(invoices_json: str = None, ctx: ToolContext = None):
+def generate_filing_summary(invoices_json: str = None, tool_context: ToolContext = None, ctx: ToolContext = None):
     """
     Pure Python aggregation (no API calls)
     """
+    ctx = tool_context or ctx
     if invoices_json is None or invoices_json == "" or invoices_json == "[]":
         if ctx is not None:
             invoices = ctx.state.get("invoices", [])
@@ -199,7 +201,7 @@ def generate_filing_summary(invoices_json: str = None, ctx: ToolContext = None):
     }
 
 
-def process_invoice_batch(folder_path: str, ctx: ToolContext = None) -> str:
+def process_invoice_batch(folder_path: str, tool_context: ToolContext = None, ctx: ToolContext = None) -> str:
     """
     Scans a folder and automatically processes all PDF invoice files inside it in a batch.
     Extracted data is accumulated inside the session memory.
@@ -207,6 +209,7 @@ def process_invoice_batch(folder_path: str, ctx: ToolContext = None) -> str:
     Args:
         folder_path: The path to the folder containing the invoices.
     """
+    ctx = tool_context or ctx
     if not os.path.exists(folder_path):
         return f"Error: Folder path '{folder_path}' does not exist."
     if not os.path.isdir(folder_path):

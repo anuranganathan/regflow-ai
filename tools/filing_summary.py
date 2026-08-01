@@ -1,7 +1,8 @@
 from google.adk.tools.tool_context import ToolContext
 
 
-def generate_filing_summary(invoices_json: str = None, ctx: ToolContext = None):
+def generate_filing_summary(invoices_json: str = None, tool_context: ToolContext = None, ctx: ToolContext = None):
+    ctx = tool_context or ctx
     if invoices_json is None or invoices_json == "" or invoices_json == "[]":
         if ctx is not None:
             invoices = ctx.state.get("invoices", [])
