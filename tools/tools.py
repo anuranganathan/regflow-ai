@@ -85,18 +85,23 @@ Rules:
 - total_amount = taxable_value + total_tax
 """
 
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=prompt
-        )
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt
+            )
 
-        text = response.text.strip()
+            text = response.text.strip()
 
-        # clean markdown if model returns ```json
-        if "```" in text:
-            text = text.replace("```json", "").replace("```", "").strip()
+            # clean markdown if model returns ```json
+            if "```" in text:
+                text = text.replace("```json", "").replace("```", "").strip()
 
-        result = json.loads(text)
+            result = json.loads(text)
+        except Exception as api_err:
+            print(f"Gemini API rate limit or error in tools.py ({api_err}). Using regex fallback.")
+            from tools.invoice_extractor import regex_fallback_invoice_extract
+            result = regex_fallback_invoice_extract(invoice_text)
 
     # Local Storage saving
     try:
