@@ -1,0 +1,17 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+.env
+.env.local
+firebase/firebase-key.json
+adk_logs/
+.adk/
+uploads/*
+!uploads/.gitkeep
+.DS_Store
+tests/
