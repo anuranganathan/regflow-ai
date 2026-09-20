@@ -1,0 +1,10 @@
+services:
+  regflow-ai:
+    build: .
+    image: regflow-ai
+    ports:
+      - "8000:8000"
+    env_file: .env          # GEMINI_API_KEY, STORAGE_MODE, S3 settings (not committed to git)
+    volumes:
+      - ./uploads:/app/uploads   # local-mode PDFs survive container restarts
+      - ./results:/app/results   # processing results (JSON)

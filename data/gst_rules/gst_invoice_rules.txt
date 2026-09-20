@@ -1,0 +1,20 @@
+Mandatory fields on a tax invoice (Rule 46)
+A tax invoice must contain: name, address and GSTIN of the supplier; a consecutive serial invoice number, unique for the financial year and not longer than 16 characters; date of issue; name, address and GSTIN of the recipient if registered; HSN code of goods or SAC of services; description, quantity and unit of the goods or services; total value; taxable value after discounts; rate of tax and amount of tax charged separately as CGST, SGST/UTGST or IGST; place of supply with the state name for inter-state supplies; whether tax is payable on reverse charge; and the signature or digital signature of the supplier.
+
+Invoice number rules
+The invoice number must be unique within a financial year, must not exceed 16 characters, and may contain letters, digits, hyphen (-) and slash (/). Duplicate invoice numbers in the same financial year are not allowed.
+
+HSN code requirement
+Businesses with aggregate turnover up to Rs 5 crore must show at least a 4-digit HSN code on B2B invoices. Businesses above Rs 5 crore must show a 6-digit HSN code on all invoices.
+
+Place of supply
+The place of supply decides whether a transaction is intra-state (CGST + SGST) or inter-state (IGST). For inter-state supplies the invoice must state the place of supply together with the name of the state.
+
+Time of issue
+For goods, the tax invoice must be issued on or before removal or delivery of the goods. For services, it must be issued within 30 days of supplying the service (45 days for banks and financial institutions).
+
+E-invoicing
+Businesses whose aggregate turnover in any financial year since 2017-18 exceeded Rs 5 crore must generate B2B invoices as e-invoices through the Invoice Registration Portal (IRP). A valid e-invoice carries an Invoice Reference Number (IRN) and a signed QR code.
+
+Tax amount shown on the invoice
+The tax charged must be shown separately from the taxable value. The invoice total must equal the taxable value plus the tax amounts. Tax amounts that do not match the applicable rate make the invoice non-compliant and the difference must be corrected with a credit note or debit note.

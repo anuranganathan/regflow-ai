@@ -1,0 +1,17 @@
+GST rate slabs
+From 22 September 2025 most goods and services fall in two main rates: 5% (merit rate) and 18% (standard rate). A special rate of 40% applies to selected luxury and sin goods. Essential items are exempt or taxed at 0%. Special low rates include 3% for gold and silver and 0.25% for rough precious stones. The earlier 12% and 28% slabs were merged into the new slabs for most items, but they still appear on invoices dated before 22 September 2025 and on a few items that were kept at the old rate.
+
+Intra-state tax split
+For an intra-state supply the GST rate is split equally between Central GST (CGST) and State GST (SGST, or UTGST in union territories). For example, at 18% GST the invoice shows CGST 9% and SGST 9%. CGST and SGST amounts on the same invoice must therefore be equal.
+
+Inter-state tax
+For an inter-state supply and for imports, Integrated GST (IGST) is charged at the full rate. For example, at 18% GST the invoice shows IGST 18%. An invoice must not charge IGST together with CGST and SGST on the same supply.
+
+Calculating tax
+Tax amount = taxable value x GST rate / 100. Invoice total = taxable value + CGST + SGST + IGST (+ cess, where applicable). Small differences of up to one rupee can arise from rounding.
+
+Taxable value
+The taxable value is the transaction value (the price actually paid or payable) and includes incidental expenses, packing and commission charged by the supplier. Discounts shown on the invoice at the time of supply are deducted before calculating tax.
+
+HSN and SAC codes
+Goods are classified by HSN (Harmonised System of Nomenclature) codes and services by SAC (Services Accounting Code). The rate applicable to an item depends on its HSN/SAC code, so the code shown on the invoice must match the rate charged.

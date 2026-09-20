@@ -428,6 +428,13 @@ body {
     box-shadow: 0 0 12px hsla(355, 85%, 55%, 0.1);
 }
 
+.badge.needs-review {
+    background-color: hsla(35, 90%, 55%, 0.1);
+    color: var(--color-warning);
+    border-color: hsla(35, 90%, 55%, 0.25);
+    box-shadow: 0 0 12px hsla(35, 90%, 55%, 0.1);
+}
+
 .badge.processing {
     background-color: hsla(190, 90%, 50%, 0.1);
     color: var(--color-accent);

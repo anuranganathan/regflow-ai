@@ -1,0 +1,14 @@
+GSTIN structure
+Every registered taxpayer gets a 15-character Goods and Services Tax Identification Number (GSTIN). Characters 1-2 are the state code of the place of registration (for example 27 Maharashtra, 29 Karnataka, 33 Tamil Nadu, 07 Delhi). Characters 3-12 are the PAN of the business. Character 13 is the entity number for registrations under the same PAN in that state (1-9, then A-Z). Character 14 is 'Z' by default. Character 15 is a check character used to detect typing errors.
+
+GSTIN validation
+A GSTIN with the wrong length, an invalid state code, a PAN segment that is not five letters followed by four digits and a letter, or a 14th character other than 'Z' is invalid. An invoice that shows an invalid supplier GSTIN cannot be used by the buyer to claim input tax credit and should be corrected by the supplier.
+
+State codes and place of supply
+The first two digits of the GSTIN identify the supplier's state. When the supplier's state and the place of supply are the same, the supply is intra-state and CGST plus SGST (or UTGST) is charged. When they differ, the supply is inter-state and IGST is charged.
+
+Registration threshold
+Registration is compulsory when aggregate turnover in a financial year exceeds Rs 40 lakh for suppliers of goods only, or Rs 20 lakh for suppliers of services (Rs 20 lakh and Rs 10 lakh respectively in special category states). Some persons must register regardless of turnover, such as inter-state suppliers of goods, e-commerce operators, casual taxable persons and persons liable under reverse charge.
+
+Unregistered suppliers
+An unregistered person must not collect GST or issue a tax invoice. If an invoice shows GST but the supplier has no valid GSTIN, the tax collected is irregular and the buyer cannot claim credit for it.

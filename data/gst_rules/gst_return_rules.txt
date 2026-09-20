@@ -1,0 +1,20 @@
+GSTR-1 (outward supplies)
+GSTR-1 reports invoice-level details of all sales (outward supplies). Monthly filers file it by the 11th of the next month. Taxpayers under the QRMP scheme file it quarterly by the 13th of the month after the quarter. Details reported in GSTR-1 flow into the buyer's GSTR-2B.
+
+GSTR-3B (summary return and tax payment)
+GSTR-3B is a monthly summary return used to declare tax liability and pay tax. Monthly filers file it by the 20th of the next month. QRMP taxpayers file it quarterly by the 22nd or 24th of the month after the quarter, depending on their state.
+
+GSTR-3B Table 3.1(a)
+Table 3.1(a) of GSTR-3B reports outward taxable supplies (other than zero rated, nil rated and exempted): the total taxable value and the integrated tax, central tax, state/UT tax and cess charged on those supplies.
+
+GSTR-3B Table 4
+Table 4 of GSTR-3B reports eligible input tax credit, ITC reversed and ineligible ITC. The credit claimed should match what is available in GSTR-2B.
+
+Late fee and interest
+Filing GSTR-3B late attracts a late fee of Rs 50 per day (Rs 20 per day for nil returns), subject to a cap, and interest of 18% per year on tax paid late.
+
+GSTR-2B
+GSTR-2B is an auto-drafted, read-only statement of input tax credit available to a buyer, generated from the suppliers' GSTR-1 filings. Buyers should reconcile their purchase invoices with GSTR-2B before claiming ITC.
+
+Annual return
+GSTR-9 is the annual return that consolidates the monthly or quarterly returns of a financial year. It is due by 31 December of the next financial year and is optional for taxpayers with aggregate turnover up to Rs 2 crore.

@@ -1,21 +1,16 @@
-# Core Framework & Backend
-fastapi>=0.109.0
-uvicorn[standard]>=0.27.0
-pydantic>=2.5.0
+# Web API
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9      # needed by FastAPI for file uploads
+pydantic>=2.7.0
 python-dotenv>=1.0.0
-requests>=2.31.0
 
-# AI Agents & GenAI SDKs
-google-genai>=0.1.1
-google-adk>=0.1.0
+# AWS S3
+boto3>=1.34.0
 
-# Document Processing & OCR
-pymupdf>=1.23.0
-Pillow>=10.0.0
+# Gemini LLM + optional ADK chat agent
+google-genai>=1.0.0
+google-adk>=1.0.0
 
-# Database & Firebase Integration
-firebase-admin>=6.2.0
-
-# Testing & Quality
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
+# PDF text extraction
+pymupdf>=1.24.0

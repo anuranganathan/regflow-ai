@@ -1,13 +1,22 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
+.pytest_cache/
 .DS_Store
-adk_logs/
+
+# secrets
 .env
 .env.*
-*.db
-.adk/
+!.env.example
+firebase/
+
+# runtime data
 uploads/*
 !uploads/.gitkeep
-firebase/firebase-key.json
-firebase/*.json
+results/
+
+# Google ADK local state
+.adk/
+adk_logs/
+*.db

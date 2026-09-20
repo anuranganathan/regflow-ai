@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RegFlow AI - GST Filing Copilot</title>
-    <meta name="description" content="Automate GST filing and compliance checks from digital and scanned PDF invoices with AI-powered OCR.">
+    <title>RegFlow AI - GST Compliance</title>
+    <meta name="description" content="Check GST invoice PDFs for compliance using Python validation, GST rule retrieval (RAG) and Gemini.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,22 +33,22 @@
         <section class="steps-tracker" aria-label="Processing Steps">
             <div class="step active" id="step-1">
                 <div class="step-number">1</div>
-                <div class="step-label">Upload Invoice</div>
+                <div class="step-label">Upload (S3)</div>
             </div>
             <div class="step-connector"></div>
             <div class="step" id="step-2">
                 <div class="step-number">2</div>
-                <div class="step-label">OCR / Extract</div>
+                <div class="step-label">Extract Text</div>
             </div>
             <div class="step-connector"></div>
             <div class="step" id="step-3">
                 <div class="step-number">3</div>
-                <div class="step-label">Verify Compliance</div>
+                <div class="step-label">Rules + Gemini</div>
             </div>
             <div class="step-connector"></div>
             <div class="step" id="step-4">
                 <div class="step-number">4</div>
-                <div class="step-label">Filing Summary</div>
+                <div class="step-label">GSTR-3B Summary</div>
             </div>
         </section>
 
@@ -61,7 +61,7 @@
                     <div class="upload-icon">📂</div>
                     <h2>Analyze New Invoice</h2>
                     <p>Drag and drop your <strong>Invoice PDF</strong> here, or click to browse files</p>
-                    <span class="file-format-info">Supports digital and scanned PDF invoices</span>
+                    <span class="file-format-info">PDF only, max 10 MB. Scanned pages use Gemini OCR.</span>
                 </div>
 
                 <!-- Live Status and Activity Panel -->
@@ -107,6 +107,18 @@
                                     <span class="meta-label">GSTIN</span>
                                     <span class="meta-value" id="meta-gstin">-</span>
                                 </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Confidence</span>
+                                    <span class="meta-value" id="meta-confidence">-</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Human Review</span>
+                                    <span class="meta-value" id="meta-review">-</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Rule Sources</span>
+                                    <span class="meta-value" id="meta-sources">-</span>
+                                </div>
                             </div>
 
                             <h3 class="section-title">GST Tax Summary</h3>
@@ -123,6 +135,10 @@
                                     <span>SGST</span>
                                     <span class="tax-price" id="tax-sgst">₹0.00</span>
                                 </div>
+                                <div class="tax-row">
+                                    <span>IGST</span>
+                                    <span class="tax-price" id="tax-igst">₹0.00</span>
+                                </div>
                                 <div class="tax-divider"></div>
                                 <div class="tax-row total">
                                     <span>Total Tax</span>
@@ -135,7 +151,7 @@
                             </div>
 
                             <div class="compliance-issues-container" id="issues-box">
-                                <h3>Filing Validation Issues</h3>
+                                <h3>Issues &amp; Recommendations</h3>
                                 <ul class="issues-list" id="issues-list">
                                     <li class="no-issues">No validation errors or issues detected.</li>
                                 </ul>

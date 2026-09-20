@@ -1,0 +1,17 @@
+Input tax credit basics
+Input tax credit (ITC) lets a registered business reduce its output GST liability by the GST it paid on purchases used in the course of business. ITC is claimed in Table 4 of GSTR-3B.
+
+Conditions to claim ITC (Section 16)
+A buyer can claim ITC only if all of these are true: the buyer holds a valid tax invoice or debit note; the goods or services have been received; the supplier has reported the invoice in GSTR-1 so it appears in the buyer's GSTR-2B; the supplier has actually paid the tax to the government; and the buyer has filed its own return.
+
+Invoice defects and ITC
+ITC can be denied when the invoice does not show the supplier's valid GSTIN, the buyer's GSTIN, the tax amount, or other mandatory particulars. Tax charged under the wrong head (for example CGST and SGST on an inter-state supply instead of IGST) is not available as credit under the correct head; the supplier must correct it.
+
+Time limit for ITC
+ITC for an invoice of a financial year must be claimed by 30 November of the following financial year or the date of filing the annual return, whichever is earlier.
+
+Payment within 180 days
+If the buyer does not pay the supplier the invoice value including tax within 180 days of the invoice date, the ITC already claimed must be reversed with interest. It can be claimed again after payment is made.
+
+Blocked credits (Section 17(5))
+ITC is not available on certain items even when paid, including most motor vehicles for personal use, food and beverages, outdoor catering, health and fitness services, club memberships, works contracts for immovable property (other than plant and machinery) and goods used for personal consumption.
