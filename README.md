@@ -19,7 +19,7 @@ RegFlow AI automates that checklist:
 | Store the PDF | AWS S3 (boto3) | Durable, cheap storage outside the app server |
 | Read the PDF | PyMuPDF | Fast local text extraction; Gemini OCR only for scanned pages |
 | Understand the document | Gemini (structured JSON output) | Invoices have many layouts, so an LLM reads them better than fixed patterns |
-| GSTIN format, required fields, tax maths | Plain Python | These have one correct answer. Code is exact; an LLM is not |
+| GSTIN check digit, required fields, tax maths | Plain Python | These have one correct answer. Code is exact; an LLM is not |
 | Find the relevant GST rules | Keyword retriever over local rule files (RAG) | Gemini answers from trusted text instead of its memory |
 | Explain the result | Gemini | Turns check results and rules into a readable explanation |
 | Decide status and confidence | Python reliability layer | The LLM can flag issues but can never override the Python checks |
@@ -47,7 +47,7 @@ Gemini  (review invoice against retrieved rules)
  ↓
 Reliability layer  (status, confidence, human review)
  ↓
-GSTR-3B summary                                ── Filing Summary Agent
+GSTR-3B summary (3.1(a) sale / Table 4 ITC)    ── Filing Summary Agent
  ↓
 JSON result (also saved to ./results/<document_id>.json)
 ```
@@ -102,8 +102,9 @@ regflow-ai/
 │   └── models/
 │       └── schemas.py             # Pydantic models
 ├── data/
-│   ├── gst_rules/                 # the knowledge base (5 short .txt files)
-│   └── sample_invoices/           # PDFs to try
+│   ├── gst_rules/                 # the knowledge base (8 short .txt files)
+│   └── sample_invoices/           # 4 PDFs to try: compliant, wrong tax,
+│                                  #   wrong tax type, mistyped GSTIN
 ├── frontend/                      # single-page upload UI served at /
 ├── regflow_agent/agent.py         # optional Google ADK chat agent
 ├── tests/                         # pytest (AWS + Gemini mocked)
@@ -165,7 +166,7 @@ Example `compliance` block from a result:
 
 ## How the result stays reliable (hallucination handling)
 
-1. **Python does the maths and format checks.** Expected tax = taxable value × rate, CGST = SGST, total = taxable + tax, intra-state vs inter-state from the GSTIN state codes, GSTIN regex and state code. Gemini is told these results are final.
+1. **Python does the maths and format checks.** Expected tax = taxable value × rate, CGST = SGST, total = taxable + tax, intra-state vs inter-state from the GSTIN state codes, and the GSTIN's format, state code and check digit. Gemini is told these results are final.
 2. **Gemini only sees trusted rules.** The prompt contains only the retrieved rule paragraphs and says "use ONLY these rules".
 3. **Citations are checked.** `sources_used` keeps only files that were actually retrieved. If Gemini cites anything else, confidence drops.
 4. **Extracted identifiers are grounded.** If Gemini returns a GSTIN or invoice number that does not appear in the PDF text, it is discarded (`extraction.ungrounded_fields`).
@@ -282,6 +283,7 @@ aws iam delete-user --user-name regflow-app
 | `S3_BUCKET_NAME` | none | Required when `STORAGE_MODE=s3` |
 | `AWS_REGION` | `ap-south-1` | Bucket region |
 | `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | none | Optional; read by boto3, not by the code. Or use `AWS_PROFILE` |
+| `BUSINESS_GSTIN` | none | Your own GSTIN. Decides sale vs purchase; if unset every invoice is treated as a sale |
 | `GEMINI_API_KEY` | none | `GOOGLE_API_KEY` is also accepted |
 | `GEMINI_MODEL` | `gemini-flash-lite-latest` | Alias for the current Flash-Lite model (fast, generous free quota). `gemini-flash-latest` uses the larger model; pin a version (e.g. `gemini-3.5-flash`) for fixed behaviour |
 | `MAX_UPLOAD_MB` | `10` | Upload size limit |
@@ -295,9 +297,10 @@ pytest -v
 
 | File | Covers |
 |---|---|
-| `tests/test_gstin_validation.py` | GSTIN format, length, state codes |
+| `tests/test_gstin_validation.py` | GSTIN format, length, state codes and the check-digit algorithm |
 | `tests/test_tax_calculation.py` | Expected tax, rate inference, CGST = SGST, IGST vs CGST/SGST, totals, GSTR-3B totals |
 | `tests/test_document_extraction.py` | PyMuPDF extraction, invalid/scanned PDFs, text cleaning, regex fallback |
+| `tests/test_filing_direction.py` | Sale vs purchase detection and the GSTR-3B table each one lands in |
 | `tests/test_retriever.py` | RAG retrieval returns the right rule file |
 | `tests/test_api_upload.py` | Upload in local and S3 mode (boto3 mocked), S3 failure → 502, Gemini mocked: compliant path, LLM cannot override Python, hallucinated GSTIN discarded, Gemini failure fallback |
 
@@ -311,11 +314,11 @@ adk run regflow_agent      # terminal chat, from the project root
 
 ## Limitations
 
-- The knowledge base is five short summaries, enough to show the RAG pattern. It is not a complete GST reference.
-- Retrieval is keyword-based. For hundreds of documents you would switch to embeddings and a vector store.
-- The GSTIN check verifies format and state code, but not the checksum character or live registration status on the GST portal.
-- Uploaded invoices are treated as outward (sales) invoices for the GSTR-3B summary.
-- Processing is synchronous: the upload request waits for Gemini (typically a few seconds).
+- The knowledge base is eight short summaries, enough to show the RAG pattern. It is not a complete GST reference.
+- Retrieval is keyword-based, which is a deliberate choice: with a handful of rule files, keyword matching with IDF weighting is accurate and easy to debug. Embeddings and a vector store would be the upgrade for a much larger knowledge base.
+- The GSTIN check covers format, state code and the check digit, so typos and invented numbers are caught. It cannot tell whether a well-formed GSTIN is actually registered and active — that needs the GST portal, which has no free public API.
+- Sale vs purchase is decided by matching `BUSINESS_GSTIN` against the invoice. Without it, every invoice is assumed to be a sale.
+- Processing is synchronous: the upload request waits for Gemini (typically a few seconds). Fine at this scale; a queue and polling would be the change if volume grew.
 - No authentication. Add it before exposing the API publicly.
 
 See [docs/interview-notes.md](docs/interview-notes.md) for design questions and answers.

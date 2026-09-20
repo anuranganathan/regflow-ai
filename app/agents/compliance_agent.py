@@ -25,7 +25,15 @@ from app.services import compliance_service, gemini_service
 
 logger = logging.getLogger("regflow.compliance_agent")
 
+DIRECTION_TEXT = {
+    "OUTWARD": "a sale issued by the business being audited (its output tax liability)",
+    "INWARD": "a purchase received by the business being audited (its input tax credit)",
+    "UNKNOWN": "of unknown direction - it is unclear whether the business is the seller or the buyer",
+}
+
 REVIEW_PROMPT = """You are a GST compliance reviewer for Indian tax invoices.
+
+This invoice is {direction}.
 
 Use ONLY the GST RULES below. If the rules do not cover something, do not invent a rule;
 set needs_human_review to true instead.
@@ -57,10 +65,13 @@ INVOICE TEXT:
 """
 
 
-def build_query(output: DocumentAgentOutput, report: ValidationReport) -> str:
+def build_query(output: DocumentAgentOutput, report: ValidationReport, direction: str) -> str:
     """Turn the invoice into a keyword query for the retriever."""
     inv = output.invoice
-    terms = ["tax invoice mandatory fields gstin rate calculating tax gstr-3b outward supplies"]
+    terms = ["tax invoice mandatory fields gstin rate calculating tax"]
+    # a purchase raises input tax credit questions; a sale raises output liability questions
+    terms.append("input tax credit eligibility gstr-2b 180 days blocked credits"
+                 if direction == "INWARD" else "gstr-3b outward taxable supplies")
     terms.append("igst inter-state" if inv.igst else "cgst sgst intra-state split")
     if not inv.hsn_codes:
         terms.append("hsn code")
@@ -70,12 +81,12 @@ def build_query(output: DocumentAgentOutput, report: ValidationReport) -> str:
     return " ".join(terms)
 
 
-def run_compliance_agent(output: DocumentAgentOutput) -> ComplianceResult:
+def run_compliance_agent(output: DocumentAgentOutput, direction: str = "OUTWARD") -> ComplianceResult:
     # 1. Deterministic validation
     report = compliance_service.validate_invoice(output.invoice)
 
     # 2. Retrieval
-    rules = get_retriever().retrieve(build_query(output, report), top_k=5)
+    rules = get_retriever().retrieve(build_query(output, report, direction), top_k=5)
 
     # 3. LLM review (optional - the system still works without it)
     review, llm_error = None, None
@@ -83,7 +94,8 @@ def run_compliance_agent(output: DocumentAgentOutput) -> ComplianceResult:
         llm_error = "GEMINI_API_KEY is not configured."
     elif rules:
         try:
-            review = gemini_service.generate_structured(_build_prompt(output, report, rules), LLMReview)
+            review = gemini_service.generate_structured(
+                _build_prompt(output, report, rules, direction), LLMReview)
         except GeminiError as exc:
             llm_error = str(exc)
             logger.warning("Compliance review by Gemini failed: %s", exc)
@@ -92,10 +104,12 @@ def run_compliance_agent(output: DocumentAgentOutput) -> ComplianceResult:
     return _merge(output, report, rules, review, llm_error)
 
 
-def _build_prompt(output: DocumentAgentOutput, report: ValidationReport, rules: list[RuleChunk]) -> str:
+def _build_prompt(output: DocumentAgentOutput, report: ValidationReport,
+                  rules: list[RuleChunk], direction: str) -> str:
     rules_text = "\n\n".join(f"[{r.source}]\n{r.text}" for r in rules)
     checks_text = "\n".join(f"- {'PASS' if c.passed else 'FAIL'}: {c.message}" for c in report.checks)
     return REVIEW_PROMPT.format(
+        direction=DIRECTION_TEXT[direction],
         rules=rules_text,
         invoice=json.dumps(output.invoice.model_dump(), indent=2),
         checks=checks_text,

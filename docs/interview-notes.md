@@ -30,7 +30,7 @@ An LLM's knowledge can be outdated or wrong. GST rates changed in September 2025
 - `requires_human_review` whenever confidence is not HIGH.
 
 **8. Why deterministic Python validation?**
-Checks like "18% of 10,000 is 1,800" or "a GSTIN is 15 characters with a valid state code" have exactly one answer. Code gets them right every time, is unit-testable, and costs nothing. An LLM can make arithmetic mistakes and give different answers to the same input. I use the LLM for what code is bad at: reading messy documents and explaining rules.
+Checks like "18% of 10,000 is 1,800" or "this GSTIN's check digit should be W" have exactly one answer. Code gets them right every time, is unit-testable, and costs nothing. An LLM can make arithmetic mistakes and give different answers to the same input. I use the LLM for what code is bad at: reading messy documents and explaining rules.
 
 **9. What is an embedding?**
 A list of numbers (a vector) that represents the meaning of a text, so similar meanings give nearby vectors. I don't use embeddings: with 5 rule files, keyword matching with IDF weighting is enough and easier to debug. With thousands of documents I would switch to embeddings to catch synonyms ("ITC" vs "input tax credit").
@@ -77,6 +77,12 @@ Not deployed in this version. The plan:
 4. Store the Gemini key in Secrets Manager.
 5. Put HTTPS in front.
 
+**21. How do you know a GSTIN is real?**
+The last character of a GSTIN is a check digit computed from the first 14. Each character becomes a number (0-9, then A-Z = 10-35), is multiplied by 1, 2, 1, 2 ... in turn, each product is folded to (product // 36) + (product % 36), and the total is summed. The check character is the one that rounds the total up to a multiple of 36. So a single mistyped character makes the GSTIN fail. That catches typos and invented numbers, but it cannot tell whether a valid-looking GSTIN is actually registered — that needs the GST portal, which has no free public API. `gstin_check_character()` in `compliance_service.py`.
+
+**22. How do you know if an invoice is a sale or a purchase?**
+From `BUSINESS_GSTIN`, your own GSTIN. If it matches the supplier, the invoice is a sale, which goes to GSTR-3B Table 3.1(a) as output liability. If it matches the recipient, it is a purchase, which goes to Table 4 as input tax credit. If it matches neither, the direction is UNKNOWN and a person decides. It matters because the same PDF means opposite things depending on which side you are on: on a sale you owe the tax, on a purchase you can claim it. The direction also steers retrieval: a purchase pulls the input-tax-credit rules into the prompt.
+
 ---
 
 **Possible follow-ups**
@@ -84,3 +90,4 @@ Not deployed in this version. The plan:
 - Why `temperature=0`? For extraction and review we want the same answer for the same input, not creativity.
 - Why a 1-rupee tolerance? Invoices round tax to whole rupees or paise, so exact float equality would give false failures.
 - Why is a missing field NEEDS_REVIEW but a wrong tax NON_COMPLIANT? A missing value might be an extraction miss, so a person should look. A wrong tax amount is proven by arithmetic.
+- Why not use embeddings for retrieval? With eight rule files, keyword matching with IDF weighting finds the right paragraph and I can explain every result. Embeddings would add an API call, a stored index and a dependency, to catch synonyms across a corpus small enough not to need it. The switch is worth making when the knowledge base is large enough that wording varies more than keywords do.

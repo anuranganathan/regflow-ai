@@ -85,10 +85,14 @@ class ComplianceResult(BaseModel):
     checks: list[ValidationCheck]
 
 
+SupplyDirection = Literal["OUTWARD", "INWARD", "UNKNOWN"]
+
+
 class FilingSummary(BaseModel):
-    """GSTR-3B style figures. Uploaded invoices are treated as outward (sales) supplies."""
+    """GSTR-3B figures. Sales go to Table 3.1(a); purchases go to Table 4 (input tax credit)."""
     return_type: str = "GSTR-3B"
-    table: str = "3.1(a) Outward taxable supplies"
+    direction: SupplyDirection
+    table: str
     invoice_count: int
     total_taxable_value: float
     total_igst: float

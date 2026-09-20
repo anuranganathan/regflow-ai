@@ -24,6 +24,7 @@ class Settings:
     storage_mode: str          # "local" or "s3"
     aws_region: str
     s3_bucket_name: str
+    business_gstin: str        # your own GSTIN, used to tell sales from purchases
     gemini_api_key: str
     gemini_model: str
     local_upload_dir: Path     # used when STORAGE_MODE=local
@@ -41,6 +42,7 @@ def get_settings() -> Settings:
         storage_mode=os.getenv("STORAGE_MODE", "local").strip().lower(),
         aws_region=os.getenv("AWS_REGION", "ap-south-1"),
         s3_bucket_name=os.getenv("S3_BUCKET_NAME", ""),
+        business_gstin=os.getenv("BUSINESS_GSTIN", "").strip().upper(),
         # GEMINI_API_KEY is preferred; GOOGLE_API_KEY is accepted for older .env files
         gemini_api_key=os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", ""),
         gemini_model=os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest"),

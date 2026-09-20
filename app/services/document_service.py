@@ -7,7 +7,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 
-import fitz  # PyMuPDF
+import pymupdf
 
 from app.config import get_settings
 from app.errors import DocumentExtractionError, GeminiError, InvalidDocumentError
@@ -43,9 +43,9 @@ def validate_pdf(filename: str, data: bytes) -> None:
             raise InvalidDocumentError("The PDF has no pages.")
 
 
-def _open_pdf(data: bytes) -> fitz.Document:
+def _open_pdf(data: bytes) -> pymupdf.Document:
     try:
-        return fitz.open(stream=data, filetype="pdf")
+        return pymupdf.open(stream=data, filetype="pdf")
     except Exception as exc:
         raise InvalidDocumentError(f"The PDF could not be opened: {exc}") from exc
 
@@ -81,7 +81,7 @@ def extract_text(data: bytes) -> ExtractedText:
     return ExtractedText(text=cleaned, page_count=page_count, ocr_pages=ocr_pages)
 
 
-def _ocr_page(page: fitz.Page, number: int) -> str:
+def _ocr_page(page: pymupdf.Page, number: int) -> str:
     if not get_settings().gemini_enabled:
         logger.info("Page %d looks scanned but OCR is unavailable (no Gemini key).", number)
         return ""

@@ -6,7 +6,7 @@ from app.services.compliance_service import calculate_expected_tax, infer_rate, 
 def make_invoice(**overrides) -> InvoiceData:
     fields = dict(
         invoice_number="INV-1", invoice_date="15-10-2025", supplier_name="ABC Traders",
-        supplier_gstin="29ABCDE1234F1Z5", recipient_gstin="29PQRSX5678K1Z3",
+        supplier_gstin="29ABCDE1234F1ZW", recipient_gstin="29PQRSX5678K1ZU",
         taxable_value=10000, gst_rate_percent=18, cgst=900, sgst=900, total_amount=11800,
     )
     fields.update(overrides)
@@ -54,10 +54,10 @@ def test_cgst_and_sgst_must_be_equal():
 
 def test_inter_state_supply_must_use_igst():
     # supplier in Karnataka (29), buyer in Maharashtra (27), but CGST+SGST charged
-    report = validate_invoice(make_invoice(recipient_gstin="27PQRSX5678K1Z3"))
+    report = validate_invoice(make_invoice(recipient_gstin="27PQRSX5678K1ZY"))
     assert "supply_type" in failed(report)
 
-    ok = validate_invoice(make_invoice(recipient_gstin="27PQRSX5678K1Z3", cgst=None, sgst=None, igst=1800))
+    ok = validate_invoice(make_invoice(recipient_gstin="27PQRSX5678K1ZY", cgst=None, sgst=None, igst=1800))
     assert failed(ok) == set()
 
 

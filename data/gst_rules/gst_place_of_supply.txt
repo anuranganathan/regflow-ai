@@ -1,0 +1,20 @@
+Why place of supply matters
+The place of supply decides which tax is charged. If the supplier's location and the place of supply are in the same state, the supply is intra-state and attracts CGST plus SGST. If they are in different states, the supply is inter-state and attracts IGST. Charging the wrong tax head means the buyer cannot use the credit, and the supplier has to correct the invoice and pay the right tax.
+
+Place of supply for goods
+Where the supply involves movement of goods, the place of supply is the location where the movement ends for delivery to the recipient. Where there is no movement, it is the location of the goods at the time of delivery. For goods assembled or installed at a site, it is the place of installation.
+
+Bill to - ship to transactions
+When goods are delivered to a third party on the instruction of the buyer, the place of supply is the principal place of business of the buyer who gave the instruction, not the address where the goods were physically delivered.
+
+Place of supply for services, general rule
+For a registered recipient, the place of supply is the recipient's location. For an unregistered recipient, it is the address on record, and otherwise the supplier's location.
+
+Place of supply for specific services
+Services connected to immovable property, including hotel accommodation and architectural work, are supplied where the property is located. Restaurant, catering, personal grooming and fitness services are supplied where they are performed. Training and events are supplied where they take place for an unregistered recipient, or at the recipient's location if registered. Transport of passengers is supplied where the passenger embarks.
+
+Imports and exports
+Imported goods have their place of supply at the importer's location and attract IGST along with customs duty. Exports and supplies to a Special Economic Zone are zero rated: no tax is charged, and the supplier can either claim a refund of input tax or export under a bond or letter of undertaking.
+
+Showing it on the invoice
+For an inter-state supply, the invoice must state the place of supply along with the name of the state. Leaving it out makes the invoice incomplete under the invoice rules.

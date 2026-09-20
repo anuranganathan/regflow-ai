@@ -1,0 +1,20 @@
+Who must issue e-invoices
+E-invoicing is compulsory for a business whose aggregate turnover in any financial year since 2017-18 crossed Rs 5 crore. It applies to business to business supplies, supplies to government departments, exports and supplies to Special Economic Zones. Business to consumer invoices are outside e-invoicing, though large taxpayers must print a dynamic QR code on them.
+
+What an e-invoice actually is
+An e-invoice is not an invoice created on the government portal. The business creates the invoice in its own billing software in a standard schema and uploads it to an Invoice Registration Portal. The portal validates it, returns an Invoice Reference Number (IRN) and a digitally signed QR code, and the supplier prints these on the invoice given to the buyer.
+
+Invoice Reference Number
+The IRN is a 64-character hash generated from the supplier's GSTIN, the invoice number, the document type and the financial year. Because it is built from those fields, the same invoice cannot be registered twice, and the IRN cannot be generated for an invoice number that was already used in that financial year.
+
+Time limit for reporting
+A business with an annual turnover of Rs 10 crore or more must upload an invoice to the portal within 30 days of the invoice date. After that window the portal rejects it, and the invoice cannot be registered at all.
+
+Consequences of not issuing an e-invoice
+If e-invoicing applies and the supplier issues a plain invoice without an IRN, that invoice is not treated as a valid tax invoice. The buyer can then be denied input tax credit on it, so buyers covered by e-invoicing should check that supplier invoices carry an IRN and QR code.
+
+Relationship with the returns
+Details of registered e-invoices flow automatically into the supplier's GSTR-1 and into the buyer's GSTR-2B, which reduces mismatches between what the supplier reported and what the buyer claims.
+
+Cancellation and corrections
+An e-invoice can be cancelled on the portal within 24 hours of generating the IRN, and only in full. After that, corrections must be made with a credit note or debit note, which themselves have to be reported to the portal.

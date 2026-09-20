@@ -1,13 +1,13 @@
 """Sample invoice text and a PDF builder used by several tests."""
-import fitz
+import pymupdf
 
 COMPLIANT_INVOICE = """TAX INVOICE
 Invoice Number: INV-2025-001
 Invoice Date: 15-10-2025
 Supplier: ABC Traders Pvt Ltd, 12 MG Road, Bengaluru
-Supplier GSTIN: 29ABCDE1234F1Z5
+Supplier GSTIN: 29ABCDE1234F1ZW
 Recipient: XYZ Retail LLP, 5 Brigade Road, Bengaluru
-Recipient GSTIN: 29PQRSX5678K1Z3
+Recipient GSTIN: 29PQRSX5678K1ZU
 Place of Supply: Karnataka (29)
 HSN Code: 8471
 Description: Laptop accessories, Qty 10
@@ -23,7 +23,7 @@ WRONG_TAX_INVOICE = COMPLIANT_INVOICE.replace("CGST @ 9%: 900.00", "CGST @ 9%: 7
 
 
 def make_pdf(text: str) -> bytes:
-    doc = fitz.open()
+    doc = pymupdf.open()
     if text:
         doc.new_page().insert_text((50, 60), text, fontsize=11)
     else:

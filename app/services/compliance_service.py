@@ -10,6 +10,7 @@ from app.models.schemas import InvoiceData, ValidationCheck, ValidationReport
 
 # 2-digit state code + 10-char PAN + entity number + 'Z' + check character
 GSTIN_PATTERN = re.compile(r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$")
+GSTIN_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"  # character values 0-35
 VALID_STATE_CODES = {f"{n:02d}" for n in range(1, 39)} | {"97", "99"}
 
 # 5/18/40 since 22-Sep-2025; 12/28 kept for older invoices; 0.25/3 special rates
@@ -18,6 +19,22 @@ TOLERANCE = 1.0  # rupees allowed for rounding differences
 
 REQUIRED_FIELDS = ("invoice_number", "invoice_date", "supplier_name", "supplier_gstin",
                    "taxable_value", "total_amount")
+
+
+def gstin_check_character(first_14: str) -> str:
+    """Compute the 15th character of a GSTIN (its check character).
+
+    Each of the first 14 characters becomes a number (0-9 = 0-9, A-Z = 10-35) and is
+    multiplied by 1, 2, 1, 2 ... in turn. Each product is folded down to
+    (product // 36) + (product % 36), and those are added up. The check character is
+    the one that brings the total to the next multiple of 36. A single mistyped
+    character changes the total, so the GSTIN no longer matches its check character.
+    """
+    total = 0
+    for position, char in enumerate(first_14):
+        product = GSTIN_CHARSET.index(char) * (2 if position % 2 else 1)
+        total += product // 36 + product % 36
+    return GSTIN_CHARSET[(36 - total % 36) % 36]
 
 
 def validate_gstin(gstin: Optional[str]) -> tuple[bool, str]:
@@ -31,7 +48,28 @@ def validate_gstin(gstin: Optional[str]) -> tuple[bool, str]:
         return False, f"GSTIN '{gstin}' does not follow the GSTIN format."
     if gstin[:2] not in VALID_STATE_CODES:
         return False, f"GSTIN '{gstin}' has an invalid state code '{gstin[:2]}'."
-    return True, f"GSTIN '{gstin}' has a valid format."
+    expected = gstin_check_character(gstin[:14])
+    if gstin[14] != expected:
+        return False, (f"GSTIN '{gstin}' fails the check-digit test: the last character should be "
+                       f"'{expected}', not '{gstin[14]}', so the number is mistyped or invented.")
+    return True, f"GSTIN '{gstin}' is valid (format, state code and check digit)."
+
+
+def detect_direction(invoice: InvoiceData, business_gstin: str) -> str:
+    """Is this invoice a sale by us (OUTWARD) or a purchase (INWARD)?
+
+    It depends on which side of the invoice our own GSTIN is on. Without
+    BUSINESS_GSTIN configured we cannot tell, so we assume it is a sale.
+    """
+    if not business_gstin:
+        return "OUTWARD"        # assumption, stated in the filing summary note
+    supplier = (invoice.supplier_gstin or "").strip().upper()
+    recipient = (invoice.recipient_gstin or "").strip().upper()
+    if supplier == business_gstin:
+        return "OUTWARD"
+    if recipient == business_gstin:
+        return "INWARD"
+    return "UNKNOWN"
 
 
 def calculate_expected_tax(taxable_value: float, rate_percent: float) -> float:

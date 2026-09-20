@@ -11,7 +11,7 @@ def test_text_is_extracted_from_digital_pdf():
     assert result.page_count == 1
     assert result.ocr_pages == []
     assert "INV-2025-001" in result.text
-    assert "29ABCDE1234F1Z5" in result.text
+    assert "29ABCDE1234F1ZW" in result.text
 
 
 def test_scanned_pdf_without_ocr_raises_clear_error():
@@ -38,8 +38,8 @@ def test_clean_text_normalises_whitespace():
 def test_regex_fallback_extracts_fields_without_guessing():
     invoice = regex_extract(COMPLIANT_INVOICE)
     assert invoice.invoice_number == "INV-2025-001"
-    assert invoice.supplier_gstin == "29ABCDE1234F1Z5"
-    assert invoice.recipient_gstin == "29PQRSX5678K1Z3"
+    assert invoice.supplier_gstin == "29ABCDE1234F1ZW"
+    assert invoice.recipient_gstin == "29PQRSX5678K1ZU"
     assert (invoice.taxable_value, invoice.cgst, invoice.sgst, invoice.total_amount) == (10000, 900, 900, 11800)
     assert invoice.gst_rate_percent == 18
     assert invoice.igst is None                     # not on the invoice -> None, not a default

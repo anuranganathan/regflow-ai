@@ -1,0 +1,14 @@
+What reverse charge means
+Normally the supplier collects GST from the buyer and pays it to the government. Under the reverse charge mechanism the recipient pays the tax directly instead. The recipient must be registered under GST, and pays the tax in cash rather than by using input tax credit.
+
+When reverse charge applies
+Reverse charge applies to notified supplies such as goods transport agency services, legal services from an advocate or firm of advocates to a business entity, sponsorship services, services from a director to the company, and imports of services. It also applies to certain notified goods, such as cashew nuts in shell, tobacco leaves and raw cotton bought from an agriculturist.
+
+Invoice requirements under reverse charge
+The supplier's tax invoice must carry the words that tax is payable on reverse charge. The supplier does not charge GST on the invoice, so the invoice shows the taxable value but no CGST, SGST or IGST. A recipient who buys from an unregistered supplier under a reverse charge notification must issue a self-invoice for that purchase.
+
+Paying and claiming the tax
+The recipient reports reverse charge liability in Table 3.1(d) of GSTR-3B and pays it in cash. The same tax can then be claimed as input tax credit in Table 4, in the same month it is paid, as long as the purchase is used for business and is not a blocked credit.
+
+Common mistakes
+Claiming reverse charge credit before actually paying the tax is wrong, as is paying reverse charge tax by adjusting existing input tax credit. An invoice that charges GST on a supply that is notified under reverse charge is also incorrect, because the supplier should not have collected that tax.
