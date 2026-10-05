@@ -321,4 +321,3 @@ adk run regflow_agent      # terminal chat, from the project root
 - Processing is synchronous: the upload request waits for Gemini (typically a few seconds). Fine at this scale; a queue and polling would be the change if volume grew.
 - No authentication. Add it before exposing the API publicly.
 
-See [
