@@ -126,7 +126,6 @@ regflow-ai/
 | `POST` | `/documents/{document_id}/analyze` | Download the stored PDF again (from S3 in S3 mode) and re-run the workflow |
 | `GET` | `/documents/{document_id}/result` | The latest saved result |
 
-Interactive docs: http://localhost:8000/docs
 
 Example `compliance` block from a result:
 
@@ -188,7 +187,6 @@ cp .env.example .env          # then put your Gemini key in .env (STORAGE_MODE=l
 uvicorn app.main:app --reload
 ```
 
-Open http://localhost:8000 (upload UI) or http://localhost:8000/docs (Swagger).
 
 With curl:
 
